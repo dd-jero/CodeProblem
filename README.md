@@ -1,2 +1,3 @@
-### README.md
-##  Studying Coding Test
+:zap::zap::zap::zap::zap::zap::zap::zap::zap:
+# _Studying Coding Test_ 
+- Baekjoon
