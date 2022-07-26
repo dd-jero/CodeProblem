@@ -5,7 +5,7 @@ def dfs(start):                                         # 깊이 우선 탐색
     visited1[start] = 1                                 # 방문 체크
 
     for i in range(1, n+1):                             
-        if visited1[i] == 0 and s[start][i] == 1:       # 방문하지 않고 연결되어 있다면
+        if visited1[i] == 0 and s[start][i] == 1:       # 방문하지 않고 연결된 node가 있으면
             dfs(i)                                      # 재귀
 
 def bfs(start):                                         # 너비 우선 탐색
@@ -13,24 +13,24 @@ def bfs(start):                                         # 너비 우선 탐색
     deq = deque()                                       # deque 정의
     deq.append(start)                                   # deque에 node 추가 
 
-    while deq:                                          # deque에 node가 있을 동안 
-        node = deq.popleft()                            # 제일 왼쪽의 node를 제거하고 추출 후 출력 
+    while deq:                                          # deque에 node가 있을 동안 반복
+        node = deq.popleft()                            # 제일 왼쪽의 node를 추출 후 출력 
         print(node, end=" ")
 
         for i in range(1,n+1):
-            if visited2[i] == 0 and s[node][i] == 1:
-                visited2[i] = 1
-                deq.append(i)
+            if visited2[i] == 0 and s[node][i] == 1:    # 방문하지 않고 연결된 node가 있으면 
+                visited2[i] = 1                         # 방문 체크
+                deq.append(i)                           # deque에 요소로 추가
 
 
 n,m,v = map(int, input().split())
-visited1 = [0 for _ in range(n+1)]
+visited1 = [0 for _ in range(n+1)]                      # 해당 node를 거쳤는지 확인을 위한 리스트 
 visited2 = [0 for _ in range(n+1)]
-s = [[0]*(n+1) for _ in range(n+1)]
+s = [[0]*(n+1) for _ in range(n+1)]                     # node 간의 연결 확인을 위한 이중 리스트
 
 for i in range(m):
     x,y = map(int, input().split())
-    s[x][y] = 1                                             # 이중 리스트의 index를 이용하여 node 간의 연결 구성
+    s[x][y] = 1                                         # 이중 리스트의 index를 이용하여 node 간의 연결 구성
     s[y][x] = 1
 
 dfs(v)
