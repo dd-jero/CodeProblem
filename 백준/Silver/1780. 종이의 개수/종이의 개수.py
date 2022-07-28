@@ -5,7 +5,7 @@ def find(paper, num):
     temp_paper = []
 
     for i in paper:
-        temp_paper.extend([*i])                                                         # extend함수를 이용하여 요소들을 한번에 리스트에 추가 
+        temp_paper.extend([*i])                                                         # unpacking과 extend함수를 이용하여 요소들을 한번에 리스트에 추가 
 
     temp_paper = set(temp_paper)                                                        # set 타입으로 변환하여 중복 값 제거
 
