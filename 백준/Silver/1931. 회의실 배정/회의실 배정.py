@@ -14,8 +14,8 @@ def find_num():
     return count
 
 n = int(sys.stdin.readline())
-cnt = []
 infor = [list(map(int, sys.stdin.readline().split())) for _ in range(n)]
+
 infor.sort(key = lambda x: (x[1],x[0]))                                         # sort 함수에 key를 이용, 종료 시간을 0순위/시작 시간을 1순위로 하여 배열 정렬 => 회의 시간이 짧으면서 시작 시간이 빠른 순으로 정렬됨을 확인할 수 있음. 
 
 print(find_num())
