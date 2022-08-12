@@ -11,7 +11,7 @@ def count_min():
 
             if 0 <= next_x < n and 0 <= next_y < m and box[next_x][next_y] == 0:        # 인접 좌표가 box에 존재하고 익지 않은 토마토이면 
                 
-                box[next_x][next_y] = box[x][y] + 1                                     # 해당 좌표의 요소에 1을 더해 인접 좌표의 요소 데이트
+                box[next_x][next_y] = box[x][y] + 1                                     # 해당 좌표의 요소에 1을 더해 인접 좌표의 요소 업데이트
                 deq.append([next_x, next_y])                                            # 인접 좌표를 deque에 추가 
 
 dxy = [[1,0], [-1,0], [0,-1], [0,1]]
