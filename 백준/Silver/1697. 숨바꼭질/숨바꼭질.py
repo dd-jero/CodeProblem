@@ -1,7 +1,7 @@
 import sys
 from collections import deque
 
-def solution(N,K, cnt):
+def solution(N,K,cnt):
     
     q = deque()
     q.append([N,cnt])
@@ -10,16 +10,20 @@ def solution(N,K, cnt):
     while q:
         cur_index, cur_cnt = q.popleft()
 
-        if cur_index == K:
+        # 동생의 위치에 도달하면 동생을 찾는게 걸린 cnt 삽입
+        if cur_index == K:              
             cnt_list.append(cur_cnt)
 
         for dcur in dx:
-            if dcur == 2:
+            # 1초 후 2*X 위치
+            if dcur == 2:    
                 nxt_index = cur_index * dcur
-            else:
+            # 1초 후 X-1 또는 X+1 위치 
+            else:              
                 nxt_index = cur_index + dcur
 
-            if 0 <= nxt_index < 100001 and not visited[nxt_index]:
+            # 해당 범위 내에 존재하고 방문하지 않았으면 
+            if 0 <= nxt_index < 100001 and not visited[nxt_index]: 
                 q.append([nxt_index, cur_cnt + 1])
                 visited[nxt_index] = 1
         
