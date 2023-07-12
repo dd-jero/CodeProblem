@@ -9,6 +9,7 @@ def solution(maps):
     visited[0][0] = 1
 
     while q:
+
         x,y,cnt = q.popleft()
         
         if x == len(maps)-1 and y == len(maps[0])-1:
