@@ -8,7 +8,7 @@
 
 ### 분류
 
-분할 정복(divide_and_conquer), 재귀(recursion)
+분할 정복, 재귀
 
 ### 문제 설명
 
