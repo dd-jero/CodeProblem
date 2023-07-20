@@ -31,7 +31,7 @@ for i in range(1,vertx+1):
 
 for _ in range(edge):
     u,v,w = map(int,stdin.readline().split())
-    if v in graph[u]:
+    if v in graph[u]:   # 이미 u에서 v까지 경로의 가중치가 존재할 수도 있기 때문 
         temp = graph[u][v]
 
         if temp > w:
