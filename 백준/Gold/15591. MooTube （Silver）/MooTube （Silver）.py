@@ -1,7 +1,7 @@
 import sys
 from collections import deque
 
-def solution(k,v):
+def solution(k,v,graph,visited):
     cnt = 0
     q = deque()
     q.append(v)
@@ -19,16 +19,19 @@ def solution(k,v):
     
     return cnt
 
-N, Q = map(int,sys.stdin.readline().rstrip().split())
-graph = {i: [] for i in range(1,N+1)}
+def main():
+    N, Q = map(int,sys.stdin.readline().rstrip().split())
+    graph = {i: [] for i in range(1,N+1)}
 
-for _ in range(N-1):
-    p, q, r = map(int,sys.stdin.readline().rstrip().split())
-    graph[p].append((q,r))
-    graph[q].append((p,r))
+    for _ in range(N-1):
+        p, q, r = map(int,sys.stdin.readline().rstrip().split())
+        graph[p].append((q,r)) # 일반 리스트를 이용하면 시간 초과, 딕셔너리 이용
+        graph[q].append((p,r))
 
-for _ in range(Q):
-    visited = [False]*(N+1)
-    k, v = map(int,sys.stdin.readline().rstrip().split())
-    print(solution(k,v))
+    for _ in range(Q):
+        visited = [False]*(N+1)
+        k, v = map(int,sys.stdin.readline().rstrip().split())
+        print(solution(k,v,graph,visited))
 
+if __name__ == "__main__":
+    main()
