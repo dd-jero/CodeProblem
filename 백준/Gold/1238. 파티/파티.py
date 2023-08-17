@@ -31,10 +31,10 @@ for _ in range(M):
     times[start].append((end,time))
     times_reverse[end].append((start,time))
 
+# 다익스트라를 N-1번 하는 것은 시간초과 => 역방향 그래프를 만들어서 다익스트라 2번만
+# 
+# pypy3 272ms, python3 76ms => 연산량이 적어 python3가 속도가 더 빠른..?
 go = dijkstra(X,times)
 back = dijkstra(X,times_reverse)
 
 print(max(go[i]+back[i] for i in range(1,N+1) if i != X))
-
-
-
