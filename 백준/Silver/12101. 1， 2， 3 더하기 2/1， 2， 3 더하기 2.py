@@ -1,4 +1,5 @@
 import sys
+sys.setrecursionlimit(10**9)
 
 def solution(n,k):
     global cnt
