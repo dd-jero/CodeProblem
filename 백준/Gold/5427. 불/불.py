@@ -24,12 +24,11 @@ def bfs():
                         visited[nxt_x][nxt_y] = tmp + 1
 
                     q.append((nxt_x,nxt_y))
-            else:
+            else: # 해당 빌딩의 범위를 나가게 되면 
                 if tmp != 'F':
                     return tmp + 1
                 
     return 'IMPOSSIBLE'
-
 
 t = int(sys.stdin.readline().strip())
 dxy = [(-1,0),(0,-1),(1,0),(0,1)]
@@ -48,7 +47,7 @@ for _ in range(t):
                 start = (i, j)
             elif building[i][j] == "*":
                 visited[i][j] = "F"
-                q.append((i, j))
+                q.append((i, j)) # 불 먼저 큐에 삽입
 
-    q.append(start)
+    q.append(start) # 제일 마지막에 상근이의 시작 위치 삽입
     print(bfs())
