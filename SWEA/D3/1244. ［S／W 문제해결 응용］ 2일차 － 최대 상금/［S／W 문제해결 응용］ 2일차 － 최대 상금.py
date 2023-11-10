@@ -9,11 +9,12 @@ def dfs(cnt):
     for cur in range(L-1):
         for nxt in range(cur+1, L):
             num_li[cur], num_li[nxt] = num_li[nxt], num_li[cur]
-            check = int("".join(num_li))
             
-            if (cnt,check) not in visited:
+            check = int("".join(num_li))*10+cnt # n,check로 하지 않고 하나의 정수로 cnt를 묶음
+            
+            if check not in visited:
                 dfs(cnt+1)
-                visited.append((cnt,check))
+                visited.append(check)
             num_li[cur], num_li[nxt] = num_li[nxt], num_li[cur]
 
 T = int(input())
