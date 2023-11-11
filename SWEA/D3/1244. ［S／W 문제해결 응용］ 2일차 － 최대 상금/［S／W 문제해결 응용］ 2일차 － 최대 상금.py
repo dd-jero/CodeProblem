@@ -1,3 +1,5 @@
+# DFS와 backtracking 이용
+
 def dfs(cnt):
     global ans
     global num_li
@@ -10,9 +12,9 @@ def dfs(cnt):
         for nxt in range(cur+1, L):
             num_li[cur], num_li[nxt] = num_li[nxt], num_li[cur]
             
-            check = int("".join(num_li))*10+cnt # n,check로 하지 않고 하나의 정수로 cnt를 묶음
+            check = int("".join(num_li))*10+cnt # n,check로 하지 않고 하나의 정수로 cnt를 묶음 ==> 소요 시간 감소
             
-            if check not in visited:
+            if check not in visited: # 해당 cnt에 num를 만들지 않았으면 
                 dfs(cnt+1)
                 visited.append(check)
             num_li[cur], num_li[nxt] = num_li[nxt], num_li[cur]
