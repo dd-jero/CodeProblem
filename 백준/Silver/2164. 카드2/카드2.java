@@ -10,7 +10,6 @@ class Main{
 	
 	public static void main(String[] args) throws NumberFormatException, IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		StringBuilder sb = new StringBuilder();
 		
 		int N = Integer.parseInt(br.readLine());
 		
@@ -22,8 +21,7 @@ class Main{
 			deq.pollLast(); // Last-In 버림
 			deq.addFirst(deq.pollLast());// 버린 후 Last-In을 First-In으로 삽입
 		}
-		
-		sb.append(deq.peek());	// 남은 하나 출력
-		System.out.println(sb);
+		// 남은 하나 출력
+		System.out.println(deq.peek());
 	}
 }
