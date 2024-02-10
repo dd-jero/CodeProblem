@@ -1,6 +1,8 @@
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 
 
 // 에라토스테네스의 체를 사용하면 메모리 초과됨! 
@@ -13,13 +15,18 @@ class Main{
 	
 	public static void main(String[] args) throws NumberFormatException, IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 		sb = new StringBuilder();
 		
 		N = Integer.parseInt(br.readLine());
 		
 		recur(0,0);
 		
-		System.out.println(sb);
+		bw.write(String.valueOf(sb));
+		
+		bw.flush();
+		br.close();
+		bw.close();
 		
 	}
 	
