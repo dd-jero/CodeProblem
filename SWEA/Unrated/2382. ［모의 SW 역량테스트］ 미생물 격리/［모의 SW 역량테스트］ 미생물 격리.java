@@ -36,6 +36,7 @@ public class Solution {
 	public static void main(String[] args) throws Exception {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st = new StringTokenizer(br.readLine());
+		StringBuilder sb = new StringBuilder();
 
 		int T = Integer.parseInt(st.nextToken());
 
@@ -61,9 +62,10 @@ public class Solution {
 
 			bfs(); 
 
-			System.out.println("#" + t + " " + res);
+			sb.append("#" + t + " " + res+"\n");
 
 		}
+		System.out.println(sb);
 	}
 
 	private static void bfs() {
@@ -122,7 +124,7 @@ public class Solution {
 			}
 		} 
 
-		// 모든 미생물 처리가 끝나면 맵을 탐색하여 미생물을 q에 저장
+		// 모든 처리 이후 맵에 존재하는 미생물 큐에 삽입 
 		for (int i = 0; i < map.length; i++) {
 			for (int j = 0; j < map[i].length; j++) {
 				if (map[i][j] != null) {
