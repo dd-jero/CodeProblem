@@ -45,8 +45,8 @@ class Main{
 		
 		while(true) {
 			
-			if(res <= tmp) { 
-				if(visited[c] == 0) res = tmp + 1; // 해당 초밥을 먹지 않았으면 가짓수 증가 
+			if(res <= tmp) { // 쿠폰 여부 상관 없이 새로운 가짓수는 tmp
+				if(visited[c] == 0) res = tmp + 1; // 해당 초밥을 먹지 않았으면 쿠폰 사용 
 				else res = tmp;
 			}
 			
@@ -68,8 +68,9 @@ class Main{
 			// 오른쪽 초밥 넣기 
 			visited[arr[right]]++;
 			if(visited[arr[right]] == 1) tmp++; // 새로운 가짓수 
-			// 이전에 쿠폰 사용 안했고 지금 사용 가능 
 			
+			
+			// tmp는 쿠폰 여부 상관없이 다른 가짓수
 			res = res < tmp ? tmp : res; // 기존 최대 가짓수와 비교 
 		}
 		
