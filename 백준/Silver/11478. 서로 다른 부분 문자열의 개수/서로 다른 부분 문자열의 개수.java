@@ -20,15 +20,10 @@ class Main{
 		set = new HashSet<String>();
 		
 		String tmp = br.readLine();
-		
-		// 1개 부터 N개까지
-		for(int c=1;c<=tmp.length();c++) {
-			for(int idx=0;idx<tmp.length()-c+1;idx++) { // 시작 인덱스 
-				sb = new StringBuilder();
-				for(int j=idx;j<idx+c;j++) {
-					sb.append(tmp.charAt(j));
-				}
-				set.add(String.valueOf(sb));
+		int size = tmp.length();
+		for(int i=0;i<size;i++) {
+			for(int j=i+1;j<size+1;j++) {
+				set.add(tmp.substring(i,j));
 			}
 		}
 		
