@@ -43,19 +43,8 @@ class Solution{
 				}
 			} // 입력 완료 
 			
+			res = 1; 
 			bfs(); 
-			
-			res = 0; 
-			
-			// 방문 체크 개수 확인
-			for(int i=0;i<N;i++) {
-				for(int j=0;j<M;j++) {
-					if(visited[i][j]) {
-						res++;
-					}
-				}
-			}
-			
 			
 			sb.append("#"+t+" "+res+"\n");
 			
@@ -136,6 +125,7 @@ class Solution{
 				
 				q.offer(new int[] {x,y-1});
 				visited[x][y-1] = true;
+				res++;
 			}
 		}
 		
@@ -152,6 +142,7 @@ class Solution{
 				
 				q.offer(new int[] {x,y+1});
 				visited[x][y+1] = true;
+				res++;
 			}
 		}
 	}
@@ -166,6 +157,7 @@ class Solution{
 				
 				q.offer(new int[] {x - 1,y});
 				visited[x-1][y] = true;
+				res++;
 			}
 		}
 	}
@@ -180,6 +172,7 @@ class Solution{
 				
 				q.offer(new int[] {x+1,y});
 				visited[x+1][y] = true;
+				res++;
 			}
 		}
 	}
