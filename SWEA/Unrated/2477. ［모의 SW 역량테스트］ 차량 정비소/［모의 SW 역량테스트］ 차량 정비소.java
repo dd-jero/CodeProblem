@@ -3,10 +3,8 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.util.ArrayDeque;
 import java.util.Comparator;
 import java.util.PriorityQueue;
-import java.util.Queue;
 import java.util.StringTokenizer;
 
 class Solution{
@@ -88,11 +86,9 @@ class Solution{
 
 				@Override
 				public int compare(People o1, People o2) {
-					if(o1.aEndTime == o2.aEndTime) {
-						return o1.aNum - o2.aNum; // 이용 접수 창구 번호 작은대로
-					} else {
-						return o1.aEndTime - o2.aEndTime; // 접수 창구 끝난 대로
-					}
+					
+					return o1.aEndTime == o2.aEndTime ? o1.aNum - o2.aNum : o1.aEndTime - o2.aEndTime;
+					
 				}
 			}); 
 			
@@ -100,12 +96,13 @@ class Solution{
 			
 			while(true) {
 				
-				// 종료조건 : 모든 고객이 접수/정비 창구 이용 완료
+				// 종료조건 : 모든 고객이 정비 창구 이용 완료
 				if(finish == K) break;
 				
 				
 				// 접수 창구 확인
 				checkFirst(curTime);
+				// 정비 창구 확인
 				checkSecond(curTime);
 				
 				curTime++;
