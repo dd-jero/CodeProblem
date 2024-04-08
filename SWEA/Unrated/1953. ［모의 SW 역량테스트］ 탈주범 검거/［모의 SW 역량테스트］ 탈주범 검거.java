@@ -9,8 +9,7 @@ import java.util.StringTokenizer;
 
 class Solution{
 	
-	static int TC;
-	static int N,M,R,C,L,res;
+	static int T,N,M,R,C,L,res;
 	static int[][] map;
 	static boolean[][] visited;
 	static Queue<int[]> q;
@@ -22,169 +21,130 @@ class Solution{
 		StringTokenizer st;
 		StringBuilder sb = new StringBuilder();
 		
-		TC = Integer.parseInt(br.readLine()); // 테케
+		T = Integer.parseInt(br.readLine());
 		
-		for(int t=1;t<=TC;t++) {
+		for(int t=1;t<=T;t++) {
 			
 			st = new StringTokenizer(br.readLine());
-			N = Integer.parseInt(st.nextToken()); // 지도 세로
-			M = Integer.parseInt(st.nextToken()); // 지도 가로
-			R = Integer.parseInt(st.nextToken()); // 맨홀 세로
-			C = Integer.parseInt(st.nextToken()); // 맨홀 가로
-			L = Integer.parseInt(st.nextToken())-1; // 탈출 후 소요 시간 
+			N = Integer.parseInt(st.nextToken()); // 세로 크기
+			M = Integer.parseInt(st.nextToken()); // 가로 크기
+			R = Integer.parseInt(st.nextToken()); // 맨홀 뚜껑이 위치한 세로 위치
+			C = Integer.parseInt(st.nextToken()); // 맨홀 뚜껑이 위치한 가로 위치
+			L = Integer.parseInt(st.nextToken()); // 탈출 후 소요된 시간
 			
-			map = new int[N][M]; // 지하 지도 
-			visited = new boolean[N][M]; // 방문 체크
-					
+			q = new ArrayDeque<int[]>();
+			visited = new boolean[N][M];
+			map = new int[N][M];
+			
 			for(int i=0;i<N;i++) {
 				st = new StringTokenizer(br.readLine());
+				
 				for(int j=0;j<M;j++) {
 					map[i][j] = Integer.parseInt(st.nextToken());
 				}
-			} // 입력 완료 
-			
-			bfs(); 
-			
-			res = 0; 
-			
-			// 방문 체크 개수 확인
-			for(int i=0;i<N;i++) {
-				for(int j=0;j<M;j++) {
-					if(visited[i][j]) {
-						res++;
-					}
-				}
-			}
-			
-			
+			} // 입력 완료
+			res = 1;
+			bfs();
 			sb.append("#"+t+" "+res+"\n");
-			
 		}
 		
-		// 출력
 		bw.write(String.valueOf(sb));
 		bw.flush();
 		br.close();
 		bw.close();
 	}
-	
-	static void bfs() {
+
+	private static void bfs() {
+		q.offer(new int[] {R,C});
+		visited[R][C] = true;
 		
-		q = new ArrayDeque<int[]>();
-		q.offer(new int[] {R,C}); // 맨홀 뚜껑 위치 시작
-		visited[R][C] = true; // 체크
-		
-		while(L>0) {
-			
-			L--; 
-			
-			int qSize = q.size(); // 현재 큐에 들어 있는 요소만 활용 = 1시간
-			
-			for(int i=0;i<qSize;i++) {
-				
-				int[] cur = q.poll(); // 현재 위치
-				
+		for(int t=1;t<L;t++) {
+			// 한 시간 이동
+			int qSize = q.size();
+			for(int i=0; i<qSize;i++) {
+				int[] cur = q.poll();
 				int x = cur[0];
 				int y = cur[1];
 				
-				switch(map[x][y]) { // 현재 터널 구조물 타입에 따라
-					case 1: // 상하좌우
-						checkLeft(x,y);
-						checkRight(x,y);
-						checkUp(x,y);
-						checkDown(x,y);
-						break;
-					case 2: // 상하
-						checkUp(x,y);
-						checkDown(x,y);
-						break;
-					case 3: // 좌우
-						checkLeft(x,y);
-						checkRight(x,y);
-						break;
-					case 4: // 우상
-						checkRight(x,y);
-						checkUp(x,y);
-						break;
-					case 5: // 우하
-						checkRight(x,y);
-						checkDown(x,y);
-						break;
-					case 6: // 좌하
-						checkLeft(x,y);
-						checkDown(x,y);
-						break;
-					case 7: // 좌상
-						checkLeft(x,y);
-						checkUp(x,y);
-						break;
+				// 각 터널 구조물에 따라 
+				if(map[x][y] == 1) {
+					checkLeft(x,y);
+					checkRight(x,y);
+					checkUp(x,y);
+					checkDown(x,y);
+				}else if(map[x][y] == 2) {
+					checkUp(x,y);
+					checkDown(x,y);
+				}else if(map[x][y] == 3) {
+					checkLeft(x,y);
+					checkRight(x,y);
+				}else if(map[x][y] == 4) {
+					checkRight(x,y);
+					checkUp(x,y);
+				}else if(map[x][y] == 5) {
+					checkRight(x,y);
+					checkDown(x,y);
+				}else if(map[x][y] == 6) {
+					checkLeft(x,y);
+					checkDown(x,y);
+				}else if(map[x][y] == 7) {
+					checkLeft(x,y);
+					checkUp(x,y);
 				}
 			}
-			
-			
 		}
 		
 	}
 	
-	static void checkLeft(int x, int y) {
-		
+	private static void checkLeft(int x, int y) {
 		if(checkRegion(x,y-1)) {
-			// 좌측 구조물은 우측으로 연결되는 터널이어야
-			if((map[x][y-1] == 1 || map[x][y-1] == 3 || map[x][y-1] == 4 || map[x][y-1] == 5)) {
-				
-				if(visited[x][y-1]) return;
-				
-				q.offer(new int[] {x,y-1});
-				visited[x][y-1] = true;
+			if(map[x][y-1] == 1 || map[x][y-1] == 3 || map[x][y-1] == 4 || map[x][y-1] == 5) {
+				if(!visited[x][y-1]) {
+					q.offer(new int[] {x,y-1});
+					visited[x][y-1] = true;
+					res++;
+				}
 			}
 		}
-		
-		
 	}
 	
-	static void checkRight(int x, int y) {
-		
+	private static void checkRight(int x, int y) {
 		if(checkRegion(x,y+1)) {
-			// 우측 구조물은 좌측으로 연결되는 터널이어야
-			if((map[x][y+1] == 1 || map[x][y+1] == 3 || map[x][y+1] == 6 || map[x][y+1] == 7)) {
-				
-				if(visited[x][y+1]) return;
-				
-				q.offer(new int[] {x,y+1});
-				visited[x][y+1] = true;
+			if(map[x][y+1] == 1 || map[x][y+1] == 3 || map[x][y+1] == 6 || map[x][y+1] == 7) {
+				if(!visited[x][y+1]) {
+					q.offer(new int[] {x,y+1});
+					visited[x][y+1] = true;
+					res++;
+				}
 			}
 		}
 	}
 	
-	static void checkUp(int x, int y) {
-		
+	private static void checkUp(int x, int y) {
 		if(checkRegion(x-1,y)) {
-			// 위의 구조물은 아래로 연결되는 터널이어야
-			if((map[x-1][y] == 1 || map[x-1][y] == 2 || map[x-1][y] == 5 || map[x-1][y] == 6)) {
-				
-				if(visited[x-1][y]) return;
-				
-				q.offer(new int[] {x - 1,y});
-				visited[x-1][y] = true;
+			if(map[x-1][y] == 1 || map[x-1][y] == 2 || map[x-1][y] == 5 || map[x-1][y] == 6) {
+				if(!visited[x-1][y]) {
+					q.offer(new int[] {x-1,y});
+					visited[x-1][y] = true;
+					res++;
+				}
 			}
 		}
 	}
 	
-	static void checkDown(int x, int y) {
-		
+	private static void checkDown(int x, int y) {
 		if(checkRegion(x+1,y)) {
-			// 아래의 구조물은 위로 연결되는 터널이어야
 			if(map[x+1][y] == 1 || map[x+1][y] == 2 || map[x+1][y] == 4 || map[x+1][y] == 7) {
-				
-				if(visited[x+1][y]) return;
-				
-				q.offer(new int[] {x+1,y});
-				visited[x+1][y] = true;
+				if(!visited[x+1][y]) {
+					q.offer(new int[] {x+1,y});
+					visited[x+1][y] = true;
+					res++;
+				}
 			}
 		}
 	}
 	
-	static boolean checkRegion(int x, int y) { // 지도 범위 내 존재 확인
+	private static boolean checkRegion(int x, int y) {
 		return (x>-1 && x<N && y>-1 && y<M);
 	}
 }
