@@ -1,25 +1,29 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
-using namespace std;
 
 int main(void) {
 
-	int T = 0; // 테케
-
+	int T = 0;
 	scanf("%d", &T);
 
-	for (int i = 0; i < T; i++) {
-
-		int num;
+	for (int i = 0;i < T;i++) {
+		int num, cnt = 0;
 		scanf("%d", &num);
 
-		for (int j = 0; j < 32; j++) { // int형이어서 32비트
-			if (num & (1 << j)) { // j번째 위치가 1이면 출력 
-				printf("%d ", j);
+		while (1) {
+
+			if (num == 0) break;
+
+			if (num % 2 == 1) {
+				printf("%d ", cnt);
 			}
+
+			num /= 2;
+			cnt++;
 		}
-		printf("\n");
+		
 	}
 
 	return 0;
+
 }
