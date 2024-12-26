@@ -1,13 +1,9 @@
 #include <iostream>
-#include <vector>
-#include <algorithm>
-#include <numeric>
 using namespace std;
 
 int main(void)
 {
-	int M, N;
-	vector<int> vec;
+	int M, N, min_num = 10001, sum = 0;
 
 	cin >> M >> N;
 
@@ -15,7 +11,8 @@ int main(void)
 
 		for (int i = 2;i <= num;i++) {
 			if (i == num) { // 해당 수가 소수이면
-				vec.push_back(num);
+				min_num = min_num > num ? num : min_num;
+				sum += num;
 				break;
 			}
 
@@ -25,14 +22,11 @@ int main(void)
 		}
 	}
 
-	if (vec.size() == 0) {
+	if (sum == 0) {
 		cout << -1;
 	}
 	else {
-		sort(vec.begin(), vec.end());
-		int sum = accumulate(vec.begin(), vec.end(), 0);
-
-		cout << sum << "\n" << vec[0];
+		cout << sum << "\n" << min_num;
 	}
 
 	return 0;
