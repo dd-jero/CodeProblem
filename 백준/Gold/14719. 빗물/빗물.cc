@@ -2,47 +2,44 @@
 #include <vector>
 using namespace std;
 
-int main(void) {
-	int H, W, res = 0; // 세로, 가로, 빗물 총량 
+int main() {
+
+	ios::sync_with_stdio(false);
+	cin.tie(0);
+
+	int H, W, res = 0;
+
 	cin >> H >> W;
 
-	vector<vector<int>> vec(H,vector<int>(W,0)); // 2차원 세계
-	for (int i = 0;i < W;i++) { // 열의 개수만큼 입력
+	vector<int> vec(W, 0);
+
+	for (int i = 0;i < W;i++) {
 		int num;
 		cin >> num;
-
-		for (int j = H-1;j >= H-num;j--) { // 아래서부터 num 만큼 블록 채우기
-			vec[j][i] = 1;
-		}
+		vec[i] = num;
 	}
 
-	//for (int i = 0;i < vec.size();i++) {
-	//	for (int j = 0;j < vec[i].size();j++) {
-	//		cout << vec[i][j] << " ";
-	//	}
-	//	cout << "\n";
-	//}
-
-	// 아래 행부터 1을 요소로 가지는 연속된 idx 차가 2 이상일 경우에 (해당 차 -1) 만큼 res 더함
-	int start_idx = -1, end_idx = -1;
-
-	for (int i = H - 1;i >= 0;i--) {
-		for (int j = 0; j < W;j++) {
-			if (vec[i][j] == 1) { // 해당 좌표의 요소가 블록이면 
-				
-				// 갱신
-				start_idx = end_idx;
-				end_idx = j;
-				if (start_idx != -1 && end_idx != -1) { // 두 인덱스가 초기값이 아닐 때 
-					if (end_idx - start_idx > 1) { // 사이에 공간이 존재하면 
-						res += (end_idx - start_idx - 1); // 사이의 빈칸만큼 더하기 
-					}
-				}
-			}
+	for (int i = 1;i < W - 1;i++) {
+		int tmp, left_max = 0, right_max = 0;
+		// 현재 열 기준 왼쪽에서의 max
+		for (int left = 0;left < i;left++) {
+			left_max = left_max < vec[left] ? vec[left] : left_max;
 		}
+
+		// 현재 열 기준 오른쪽에서의 max
+		for (int right = i + 1;right < W;right++) {
+			right_max = right_max < vec[right] ? vec[right] : right_max;
+		}
+
+		tmp = left_max > right_max ? right_max : left_max;
+
+		if (tmp > vec[i]) { // 해당 작은 값이 현재 열의 1의 수보다 작아야
+			res += (tmp - vec[i]);
+		}
+
 	}
 
-	cout << res;
+	cout << res; 
 
 	return 0;
 }
