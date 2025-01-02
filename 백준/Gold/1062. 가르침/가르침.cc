@@ -14,6 +14,7 @@ int N = 0, K = 0; // 단어의 개수, 가르칠 수 있는 글자 수
 
 int main() {
 	ios::sync_with_stdio(false);
+	cout.tie(0);
 	cin.tie(0);
 
 	cin >> N >> K;
@@ -24,19 +25,19 @@ int main() {
 
 		// 시작과 끝 검증
 		if (str.substr(0, 4) == "anta" && str.substr(str.length() - 4) == "tica") {
-			vec.push_back(str);
-	;	}
+			vec.push_back(str.substr(4, str.length()-4));
+		}
 	}
 
 	if (K < 5) { // anta, tica 조차 다 못 배움 
 		cout << 0;
 		return 0;
 	}
-		
+
 	// 기본 문자 처리
 	learned |= (1 << ('a' - 'a')) | (1 << ('n' - 'a')) | (1 << ('t' - 'a')) | (1 << ('i' - 'a')) | (1 << ('c' - 'a'));
 	K -= 5;
-	
+
 	recur(0, K);
 
 	cout << res;
@@ -87,7 +88,7 @@ int check_word() {
 			if (!(learned & (1 << str[i] - 'a'))) { // 해당 글자 배우지 않았으면 
 				break;
 			}
-			
+
 			tmp++;
 
 		}
