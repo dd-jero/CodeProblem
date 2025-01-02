@@ -4,13 +4,12 @@
 using namespace std;
 
 int learned = 0; // 배운 글자 여부 비트마스킹 
-vector<string> vec;
-
-void recur(int idx, int cnt); // 조합을 위한 재귀함수 
-int check_word();
+int word[50];
 int res = 0;
 int N = 0, K = 0; // 단어의 개수, 가르칠 수 있는 글자 수
 
+void recur(int idx, int cnt); // 조합을 위한 재귀함수 
+int check_word();
 
 int main() {
 	ios::sync_with_stdio(false);
@@ -23,9 +22,14 @@ int main() {
 	for (int i = 0;i < N;i++) { // 단어의 개수 만큼 입력 
 		cin >> str;
 
+		int num = 0;
 		// 시작과 끝 검증
 		if (str.substr(0, 4) == "anta" && str.substr(str.length() - 4) == "tica") {
-			vec.push_back(str.substr(4, str.length()-4));
+			for (int j = 0;j < (str.length() - 4); j++) {
+				num |= (1 << (str[j] - 'a'));
+			}
+
+			word[i] = num; // 단어도 비트 마스킹 활용 해서 저장 
 		}
 	}
 
@@ -79,21 +83,10 @@ void recur(int idx, int cnt) {
 
 int check_word() {
 
-	int tmp_res = 0, tmp;
+	int tmp_res = 0;
 
-	for (string str : vec) {
-
-		tmp = 0;
-		for (int i = 0;i < str.length();i++) {
-			if (!(learned & (1 << str[i] - 'a'))) { // 해당 글자 배우지 않았으면 
-				break;
-			}
-
-			tmp++;
-
-		}
-
-		if (tmp == str.length()) { // 해당 단어를 읽을 수 있으면
+	for (int i = 0;i < N;i++) {
+		if ((word[i] & learned) == word[i]) { // 해당 단어를 읽을 수 있으면 
 			tmp_res++;
 		}
 	}
