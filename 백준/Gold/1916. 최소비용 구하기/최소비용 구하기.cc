@@ -1,71 +1,96 @@
 #include <iostream>
-#include <queue>
-#include <vector>
 using namespace std;
-
-// 무한대 값 정의 (INT_MAX 대신 1e9 사용하여 오버플로우 방지)
 const int INF = 1e9;
 
-int N, M; // N: 도시의 개수, M: 버스의 개수
-vector<vector<pair<int, int>>> graph; // 인접 리스트로 그래프 표현
-vector<int> dist; // 최소 비용 테이블
-
-// 다익스트라 알고리즘 함수
-void dijkstra(int start, int end) {
-    // 최소 힙 우선순위 큐 선언 (비용, 노드 번호)
-    priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
-    pq.push({ 0, start }); // 시작 노드 정보 우선순위 큐에 삽입
-    dist[start] = 0; // 시작 노드까지의 거리는 0으로 초기화
-
-    while (!pq.empty()) {
-        int cost = pq.top().first; // 현재 노드까지의 비용
-        int cur = pq.top().second; // 현재 노드 번호
-        pq.pop();
-
-        // 이미 처리된 노드라면 무시
-        if (dist[cur] < cost) continue;
-
-        // 현재 노드와 연결된 다른 인접한 노드들을 확인
-        for (auto& p : graph[cur]) {
-            int next = p.first; // 다음 노드 번호
-            int nextCost = p.second; // 다음 노드로 가는 비용
-
-            // 현재 노드를 거쳐서 다음 노드로 이동하는 거리가 더 짧은 경우
-            if (cost + nextCost < dist[next]) {
-                dist[next] = cost + nextCost; // 최단 거리 갱신
-                pq.push({ dist[next], next }); // 우선순위 큐에 삽입
-            }
-        }
-    }
-}
+int N, M; // 도시 개수, 버스 개수
+int graph[1001][1001]; // 인접 행렬
+int dist[1001]; // 최소 비용
+bool visited[1001]; // 방문 체크 
+int FindShortestNode();
+void Dijkstra(int start, int end);
 
 int main() {
-    // 입출력 최적화
-    ios::sync_with_stdio(false);
-    cin.tie(0);
-    cout.tie(0);
+	ios::sync_with_stdio(false);
+	cin.tie(0);
+	cout.tie(0);
 
-    // 도시의 개수와 버스의 개수 입력
-    cin >> N >> M;
+	cin >> N >> M;
 
-    // 그래프 초기화 (1-indexed)
-    graph.resize(N + 1);
-    // 최단 거리 테이블 초기화
-    dist.assign(N + 1, INF);
+	// 그래프 초기화 
+	for (int i = 1;i < N + 1;i++) {
+		for (int j = 1;j < N + 1;j++) {
+			if (i != j) graph[i][j] = INF;
+		}
+	}
 
-    // 버스 정보 입력
-    for (int i = 0; i < M; i++) {
-        int s, e, c;
-        cin >> s >> e >> c;
-        graph[s].push_back({ e, c }); // s에서 e로 가는 비용 c인 간선 추가
-    }
+	int src, dest, cost;
+	for (int i = 0;i < M;i++) {
+		cin >> src >> dest >> cost;
+		graph[src][dest] = min(graph[src][dest], cost); // 최소 비용으로 저장해야함 
+	}
 
-    // 출발지와 도착지 입력
-    int start, end;
-    cin >> start >> end;
+	// 출발 도시와 도착 도시 입력 
+	int start, end;
+	cin >> start >> end;
 
-    dijkstra(start, end);
+	// 도시 개수 만큼 INF로 초기화 
+	for (int i = 1;i < N + 1;i++) {
+		dist[i] = INF;
+	}
 
-    cout << dist[end];
-    return 0;
+	// 인접 행렬 활용 다익스트라 
+	Dijkstra(start, end);
+
+	cout << dist[end];
+
+	return 0;
 }
+
+// 방문하지 않는 점들 중에서 가장 가까운 점 인덱스 반환 
+int FindShortestNode() {
+	int min_dist = INF;
+	int min_idx = -1;
+
+	for (int i = 1;i < N + 1;i++) {
+		if (visited[i]) continue;
+
+		if (dist[i] < min_dist) {
+			min_dist = dist[i];
+			min_idx = i;
+		}
+	}
+	return min_idx;
+}
+
+void Dijkstra(int start, int end) {
+
+	// 시작점 세팅
+	dist[start] = 0;
+	visited[start] = true;
+
+	// 시작점에서 연결된 노드를 확인 
+	for (int i = 1;i < N + 1;i++) {
+		if (graph[start][i] != INF) {
+			dist[i] = graph[start][i];
+		}
+	}
+
+	for (int i = 0;i < N-1;i++) {
+
+		int cur = FindShortestNode();
+		if (cur == -1) break; // 다 방문 했으면 
+		visited[cur] = true;
+
+		for (int j = 1;j < N + 1;j++) {
+			if (visited[j]) continue;
+
+			// 새로 고려하는 거리가 더 작으면 갱신
+			if (dist[j] > dist[cur] + graph[cur][j]) {
+				dist[j] = dist[cur] + graph[cur][j];
+			}
+		}
+
+	}
+
+}
+
