@@ -68,6 +68,10 @@ void bfs(int start_x, int start_y) {
 		int cur_len = q.front().len;
 		q.pop();
 
+		if (map[cur_x][cur_y] > 0 && map[cur_x][cur_y] < cur_len) { // 이미 더 작은 안전거리가 저장되어 있는데 
+			continue;
+		}
+
 		for (int i = 0;i < 8;i++) {
 			int nxt_x = cur_x + dx[i];
 			int nxt_y = cur_y + dy[i];
