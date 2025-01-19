@@ -1,6 +1,5 @@
 #include <iostream>
 #include <queue>
-#include <vector>
 using namespace std;
 
 struct step{
@@ -14,7 +13,7 @@ struct step{
 
 void bfs(int location, int time);
 int n, m, fastest_time = -1, find_cnt = 0; // 수빈 위치, 동생 위치, 가장 빨리 찾은 시간, 동생을 찾는 방법 수 
-vector<int> checked(100001, -1); // 위치 체크 
+int checked[100001]; // 위치 체크 
 int dx[3] = { -1,1,2 };
 priority_queue<step> pq;
 
@@ -54,7 +53,7 @@ void bfs(int location, int time) {
 
 		for (int nxt_loc : {loc - 1, loc + 1, loc * 2}) {
 			if (-1 < nxt_loc && nxt_loc < 100001) {
-				if (checked[nxt_loc] == -1 || checked[nxt_loc] == time+1) { // 첫 방문이거나 동일 시간에 방문이면(가장 빠른 시간을 찾은 경우)
+				if (checked[nxt_loc] == 0 || checked[nxt_loc] == time+1) { // 첫 방문이거나 동일 시간에 방문이면(가장 빠른 시간을 찾은 경우)
 					checked[nxt_loc] = time+1;
 					pq.push(step{ nxt_loc, time + 1 });
 				}
