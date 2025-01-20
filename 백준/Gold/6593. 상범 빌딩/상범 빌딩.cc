@@ -8,10 +8,6 @@ struct Pos {
 	int x;
 	int y;
 	int time;
-
-	bool operator<(const Pos& other) const { // 시간에 따른 오름차순의 우선순위 큐를 활용
-		return this->time > other.time;
-	}
 };
 
 int l, r, c, s_z, s_x, s_y, e_z, e_x, e_y;
