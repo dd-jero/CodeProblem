@@ -1,27 +1,23 @@
 #include <iostream>
-#include <vector>
+#include <cstring>
 using namespace std;
 
 int t, n, res;
-vector<int> vec;
-vector<int> checked; // -1: 팀 실패, 0: 아직 확인 안 됨, 1: 팀 성공
-vector<bool> visited;
+int vec[100001];
+int checked[100001]; // -1: 팀 실패, 0: 아직 확인 안 됨, 1: 팀 성공
+bool visited[100001];
 
 void dfs(int cur_mem);
 
 int main() {
     ios::sync_with_stdio(false);
     cin.tie(0);
+    cout.tie(0);
 
     cin >> t;
 
     for (int tc = 0; tc < t; tc++) {
         cin >> n;
-
-        // 테스트 케이스마다 초기화
-        vec.assign(n + 1, 0);
-        checked.assign(n + 1, 0);
-        visited.assign(n + 1, false);
         res = 0;
 
         for (int i = 1; i <= n; i++) {
@@ -40,6 +36,10 @@ int main() {
         }
 
         cout << res << "\n";
+
+        memset(vec, 0, sizeof(vec));
+        memset(checked, 0, sizeof(checked));
+        memset(visited, false, sizeof(visited));
     }
 
     return 0;
