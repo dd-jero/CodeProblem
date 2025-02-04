@@ -2,9 +2,10 @@
 #include <iostream>
 using namespace std;
 
-int n, cur_min_cost = INF, total_cost = 0;
-int len_road[100001]; // 도로의 길이
-int liter_cost[100001]; // 각 주유소의 리터당 가격
+long long n, cur_min_cost = INF;
+long long total_cost = 0;
+long len_road[100001]; // 도로의 길이
+long long liter_cost[100001]; // 각 주유소의 리터당 가격
 
 int main() {
 	ios::sync_with_stdio(false);
@@ -26,7 +27,7 @@ int main() {
 		// 현재 주유소 가격이 더 싸면 갱신 
 		cur_min_cost = cur_min_cost > liter_cost[i] ? liter_cost[i] : cur_min_cost;
 
-		total_cost += (cur_min_cost * len_road[i]);
+		total_cost += (long long)(cur_min_cost * len_road[i]);
 	}
 
 	cout << total_cost << "\n";
