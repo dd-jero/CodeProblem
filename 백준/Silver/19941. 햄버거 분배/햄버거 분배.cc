@@ -4,8 +4,7 @@
 using namespace std;
 
 int N, K, res = 0;
-vector<int> idx_p, idx_h;
-bool visited[20001];
+vector<int> idx_p;
 
 int main() {
 	ios::sync_with_stdio(false);
@@ -17,19 +16,18 @@ int main() {
 	cin >> str;
 
 	for (int i = 0;i < str.length();i++) {
-		if (str[i] == 'H') { // 사람이면 
+		if (str[i] == 'P') { // 사람이면 
 			idx_p.push_back(i);
-		}
-		else { // 햄버거이면 
-			idx_h.push_back(i);
 		}
 	}
 
 	for (int i = 0;i < idx_p.size();i++) {
-		for (int j = 0;j < idx_h.size();j++) {
-			if (idx_h[j] >= idx_p[i] - K && idx_h[j] <= idx_p[i] + K && !visited[j]) {
+		for (int j = idx_p[i] - K ;j <= idx_p[i] + K;j++) {
+			if (j < 0 || j >= N) continue;
+
+			if (str[j] == 'H') {
 				res++;
-				visited[j] = true;
+				str[j] = '0';
 				break;
 			}
 		}
