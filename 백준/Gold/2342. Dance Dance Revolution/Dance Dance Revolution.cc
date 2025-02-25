@@ -3,12 +3,11 @@
 #include <climits>
 using namespace std;
 
-const int INF = INT_MAX; // 오버플로우 방지를 위한 최대값 설정
+const int INF = INT_MAX;
 int dp[5][5][100002]; // dp[왼발위치][오른발위치][단계] = 최소 힘
 int sequence[100002]; // 입력 수열 저장
 int n = 0; // 총 단계 수
 
-// 이동 비용 계산 함수
 int GetCost(int from, int to) {
     if (from == to) return 1; // 같은 지점
     if (from == 0) return 2;  // 중앙에서 이동
@@ -22,8 +21,9 @@ int main() {
 
     // 1. 입력 처리
     int num;
-    while (cin >> num && num != 0)
+    while (cin >> num && num != 0) {
         sequence[++n] = num;
+    }
 
     // 2. DP 배열 초기화 (모든 값을 INF로 설정)
     fill(&dp[0][0][0], &dp[4][4][n + 1], INF);
@@ -42,23 +42,17 @@ int main() {
                 // Case 1: 왼발을 target으로 이동
                 int new_left = target;
                 int cost = GetCost(left, new_left);
-                dp[new_left][right][step] = min(
-                    dp[new_left][right][step],
-                    dp[left][right][step - 1] + cost
-                );
+                dp[new_left][right][step] = min(dp[new_left][right][step],dp[left][right][step - 1] + cost);
 
                 // Case 2: 오른발을 target으로 이동
                 int new_right = target;
                 cost = GetCost(right, new_right);
-                dp[left][new_right][step] = min(
-                    dp[left][new_right][step],
-                    dp[left][right][step - 1] + cost
-                );
+                dp[left][new_right][step] = min(dp[left][new_right][step],dp[left][right][step - 1] + cost);
             }
         }
     }
 
-    // 4. 최종 결과 계산 (마지막 단계의 최소값)
+    // 최종 계산 (마지막 단계의 최소값)
     int result = INF;
     for (int left = 0; left < 5; ++left)
         for (int right = 0; right < 5; ++right)
