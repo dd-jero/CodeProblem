@@ -4,7 +4,6 @@ using namespace std;
 
 int N, R, Q; // 트리 정점 수, 루트 번호, 쿼리 수
 vector<vector<int>> tree;
-vector<vector<int>> childnode; // i 노드의 child 
 vector<int> subtree_size; // 해당 i 노드의 서브 트리 노드 수
 
 int MakeTree(int cur_node, int parent); 
@@ -15,7 +14,6 @@ int main() {
 
 	cin >> N >> R >> Q;
 	tree.resize(N+1);
-	childnode.resize(N + 1);
 	subtree_size.resize(N + 1, 0);
 
 	int s, e;
@@ -43,7 +41,6 @@ int MakeTree(int cur_node, int parent) {
 
 	for (int node : tree[cur_node]) { // 현재 노드와 연결된 노드 확인
 		if (node != parent) { // 부모 노드 아니면
-			childnode[cur_node].push_back(node); // 자식 노드로 삽입
 			size += MakeTree(node, cur_node); // 현재 노드를 부모로 하는 자식 노드들의 개수
 		}
 	}
