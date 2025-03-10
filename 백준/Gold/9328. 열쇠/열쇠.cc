@@ -10,7 +10,7 @@ int tc, h, w, cnt_doc, res;
 vector<vector<char>> building;
 vector<vector<bool>> visited;
 set<char> key;
-map<char, vector<pair<int, int>>> doors; // key: 문, value: 문의 좌표 
+map<char, vector<pair<int, int>>> doors; // key: 문, vaule: 문의 좌표 
 
 int dx[4] = { 0,0,-1,1 };
 int dy[4] = { 1,-1,0,0 };
@@ -25,7 +25,7 @@ int main() {
 	cin >> tc;
 	string str;
 
-	for (int t = 0; t < tc; t++) {
+	for (int t = 0;t < tc;t++) {
 		cin >> h >> w;
 
 		// 빌딩과 방문 체크, 열쇠 초기화 
@@ -36,20 +36,26 @@ int main() {
 		res = 0;
 
 		cnt_doc = 0; // 지도 상에 존재하는 문서 전체 개수
-		for (int i = 0; i < h; i++) {
+		for (int i = 0;i < h;i++) {
 			cin >> str;
-			for (int j = 0; j < w; j++) {
+
+			for (int j = 0;j < w;j++) {
 				building[i][j] = str[j];
-				if (str[j] == '$') cnt_doc++; // 문서 개수 카운트
+
+				if (str[j] == '$') cnt_doc++;
 			}
 		}
 
 		cin >> str;
 		if (str != "0") {
-			for (char c : str) key.insert(toupper(c)); // 이미 가진 열쇠 추가
+			// 이미 가지고 있는 열쇠
+			for (int i = 0;i < str.length();i++) {
+				key.insert(toupper(str[i])); // 대문자로 변환해서 set에 삽입
+			}
 		}
 
 		BFS();
+
 		cout << res << "\n";
 	}
 
@@ -58,16 +64,10 @@ int main() {
 
 // 시작 가능한 위치인가
 bool CanStart(int x, int y) {
-	if (visited[x][y] || building[x][y] == '*') return false; // 벽이면 시작 불가능
 
-	if (building[x][y] == '.' || building[x][y] == '$') { // 빈 공간 또는 문서면 이동 가능
-		visited[x][y] = true;
-		if (building[x][y] == '$') res++; // 문서 획득
-		return true;
-	}
+	if (visited[x][y] || building[x][y] == '*') return false;
 
-	if (islower(building[x][y])) { // 열쇠면
-		key.insert(toupper(building[x][y])); // 열쇠 삽입
+	if (building[x][y] == '.') { // 빈 공간일 때 
 		visited[x][y] = true;
 		return true;
 	}
@@ -81,6 +81,18 @@ bool CanStart(int x, int y) {
 			doors[building[x][y]].push_back({ x, y }); // 나중을 위해 저장
 			return false;
 		}
+	}
+
+	if (islower(building[x][y])) { // 열쇠면
+		key.insert(toupper(building[x][y])); // 열쇠 삽입
+		visited[x][y] = true;
+		return true;
+	}
+
+	if (building[x][y] == '$') { // 문서면
+		res++;
+		visited[x][y] = true;
+		return true;
 	}
 
 	return false;
@@ -99,64 +111,60 @@ void BFS() {
 		if (CanStart(h - 1, j)) q.push({ h - 1, j });
 	}
 
-	// 초기 열쇠로 열 수 있는 문 미리 처리
-	for (auto it = doors.begin(); it != doors.end(); ) {
-		if (key.count(it->first)) { // 이미 열쇠를 가지고 있다면
-			for (auto& loc : it->second) {
-				q.push(loc);
-				visited[loc.first][loc.second] = true;
-			}
-			it = doors.erase(it); // 사용한 문은 삭제
-		}
-		else {
-			++it;
-		}
-	}
-
 	while (!q.empty()) {
-		int cur_x  = q.front().first;
-		int cur_y = q.front().second;
-
+		auto cur = q.front();
+		visited[cur.first][cur.second] = true;
 		q.pop();
 
-		for (int d = 0; d < 4; d++) {
-			int nxt_x = cur_x + dx[d];
-			int nxt_y = cur_y + dy[d];
+		for (int d = 0;d < 4;d++) {
+			int nxt_x = cur.first + dx[d];
+			int nxt_y = cur.second + dy[d];
 
-			// 빌딩 범위 초과 or 이미 방문한 곳이면 무시
+			// 빌딩의 범위를 초과하거나, 이미 방문한 위치라면 무시 
 			if (nxt_x < 0 || nxt_x >= h || nxt_y < 0 || nxt_y >= w) continue;
-			if (visited[nxt_x][nxt_y]) continue;
-			if (building[nxt_x][nxt_y] == '*') continue; // 벽이면 무시
+			if (visited[nxt_x][nxt_y] || building[nxt_x][nxt_y] == '*') continue;
 
-			if (building[nxt_x][nxt_y] == '.' || building[nxt_x][nxt_y] == '$') { // 빈 공간 or 문서
-				if (building[nxt_x][nxt_y] == '$') res++;
+			if (building[nxt_x][nxt_y] == '.') { // 빈 공간이면 이동 가능 
 				q.push({ nxt_x, nxt_y });
 				visited[nxt_x][nxt_y] = true;
 			}
-			else if (islower(building[nxt_x][nxt_y])) { // 열쇠 발견
+			else if (islower(building[nxt_x][nxt_y])) { // 열쇠 획득
 				char new_key = toupper(building[nxt_x][nxt_y]);
-				key.insert(new_key);
+				key.insert(new_key); // 열쇠 추가
 				q.push({ nxt_x, nxt_y });
 				visited[nxt_x][nxt_y] = true;
 
-				// 해당 열쇠로 열 수 있는 문들 방문 처리
+				// 저장된 문의 좌표 처리
 				if (doors.count(new_key)) {
 					for (auto& loc : doors[new_key]) {
-						q.push(loc);
-						visited[loc.first][loc.second] = true;
+						if (!visited[loc.first][loc.second]) { // 방문하지 않은 문의 좌표만 추가
+							q.push(loc);
+							visited[loc.first][loc.second] = true;
+						}
 					}
 					doors.erase(new_key);
 				}
 			}
-			else if (isupper(building[nxt_x][nxt_y])) { // 문 발견
-				if (key.count(building[nxt_x][nxt_y])) { // 열쇠가 있으면 열기
+			else if (isupper(building[nxt_x][nxt_y])) { // 알파벳 대문자이면 열쇠 있을 때만 이동 가능 
+				if (key.count(building[nxt_x][nxt_y]) == 1) {
+
 					q.push({ nxt_x, nxt_y });
 					visited[nxt_x][nxt_y] = true;
 				}
-				else { // 열쇠가 없으면 저장
+				else { // 나중에 키를 발견하면 이전에 열지 못했던, 방문 가능한 문의 위치를 활용할 수 있도록
 					doors[building[nxt_x][nxt_y]].push_back({ nxt_x, nxt_y });
 				}
 			}
+			else if (building[nxt_x][nxt_y] == '$') { // 문서이면
+				q.push({ nxt_x, nxt_y });
+				visited[nxt_x][nxt_y] = true;
+				res++;
+
+				if (res == cnt_doc) return;
+			}
+
 		}
+
 	}
+
 }
