@@ -6,8 +6,14 @@ struct Node {
 	int virus;
 	int x;
 	int y;
+	int time;
 
 	bool operator<(const Node& other) const {
+		
+		if (this->time != other.time) {
+			return this->time > other.time;
+		}
+
 		return this->virus > other.virus;
 	}
 };
@@ -32,7 +38,7 @@ int main() {
 			cin >> arr[i][j];
 
 			if (arr[i][j] != 0) {
-				pq.push(Node{ arr[i][j], i,j });
+				pq.push(Node{ arr[i][j], i,j,0 });
 			}
 		}
 	}
@@ -49,9 +55,9 @@ int main() {
 void BFS() {
 
 	for(int s=1; s<=S; s++) { // S초 지난 후에 결과를 확인하기 위함.
-		priority_queue<Node> tmp;
+		int pq_size = pq.size();
 
-		while(!pq.empty()) { // 현재 시간에서의 바이러스로
+		for(int p=0; p<pq_size; p++) { // 현재 시간에서의 바이러스로
 			Node cur = pq.top();
 			pq.pop();
 
@@ -63,17 +69,8 @@ void BFS() {
 				if (arr[nxt_x][nxt_y] != 0) continue; // 이미 다른 바이러스가 존재하면
 
 				arr[nxt_x][nxt_y] = cur.virus;
-				tmp.push(Node{ cur.virus, nxt_x, nxt_y });
+				pq.push(Node{ cur.virus, nxt_x, nxt_y,s });
 			}
-
-		}
-
-		while (!tmp.empty()) {
-			Node t = tmp.top();
-			tmp.pop();
-
-			pq.push(t);
 		}
 	}
-
 }
