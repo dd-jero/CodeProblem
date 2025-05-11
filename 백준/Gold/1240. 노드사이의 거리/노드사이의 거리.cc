@@ -1,10 +1,11 @@
 #include <iostream>
 #include <queue>
+#include <vector>
 using namespace std;
 
 int N, M, res = 0;// 노드 개수, 알고 싶은 노드 쌍 수 
-int dis[1001][1001];
-bool visited[1001];
+vector<vector<pair<int, int>>> dis;
+vector<bool> visited; 
 
 void DFS(int cur, int end, int dist);
 
@@ -14,21 +15,19 @@ int main() {
 
 	cin >> N >> M;
 
+	dis.resize(N + 1);
+	visited.resize(N + 1);
+
 	int a, b, d;
 
 	// 거리 입력
 	for (int i = 0;i < N-1;i++) {
 		cin >> a >> b >> d;
+		
+		// {노드, 거리}
+		dis[a].push_back({ b,d }); 
+		dis[b].push_back({ a,d });
 
-		if (dis[a][b] == 0) {
-			dis[a][b] = d;
-			dis[b][a] = d;
-		}
-		else {
-			int min_d = dis[a][b] > d ? d : dis[a][b];
-			dis[a][b] = min_d;
-			dis[b][a] = min_d;
-		}
 	}
 
 	// 노드 쌍 입력 
@@ -38,9 +37,8 @@ int main() {
 		cout << res << "\n";
 		res = 0;
 
-		for (int i = 1;i <= N;i++) {
-			visited[i] = false;
-		}
+		visited.clear();
+		visited.assign(N + 1, false);
 	}
 
 	return 0;
@@ -54,12 +52,9 @@ void DFS(int cur, int end, int dist) {
 		return;
 	}
 
-	for (int i = 1;i <= N;i++) {
-		if (dis[cur][i] != 0) { // 연결되어 있으면
-			if (!visited[i]) {
-
-				DFS(i, end, dist + dis[cur][i]);
-			}
+	for (auto nxt: dis[cur]) {
+		if (!visited[nxt.first]) { 
+			DFS(nxt.first, end, dist + nxt.second);
 		}
 	}
 	
