@@ -9,7 +9,7 @@ struct pos {
 	int y;
 };
 
-int H, N, M, day_cnt = -1; // 높이 세로 가로 최소 일수 
+int H, N, M, change_cnt = 0, day_cnt = -1; // 높이 세로 가로 익지 않은 토마토 수 최소 일수 
 vector<vector<vector<int>>> box; // 상자
 queue<pos> q;
 
@@ -19,7 +19,6 @@ int dx[6] = { 0,0,0,0,-1,1 };
 int dy[6] = { 0,0,-1,1,0,0 };
 
 void BFS();
-bool CHECK(); // 모든 토마토 익었는 지 확인
 
 int main() {
 	ios::sync_with_stdio(false);
@@ -33,10 +32,12 @@ int main() {
 		for (int i = 0;i < N;i++) {
 			for (int j = 0;j < M;j++) {
 				cin >> box[h][i][j];
-
-				// 초기 익은 토마토 큐 삽입 
-				if (box[h][i][j] == 1) {
+				
+				if (box[h][i][j] == 1) { // 초기 익은 토마토 큐 삽입 
 					q.push({ h,i,j });
+				}
+				else if (box[h][i][j] == 0) { // 익지 않은 토마토면
+					change_cnt++;
 				}
 			}
 		}
@@ -44,7 +45,7 @@ int main() {
 
 	BFS();
 
-	if (!CHECK()) cout << -1 << "\n";
+	if (change_cnt != 0) cout << -1 << "\n";
 	else cout << day_cnt << "\n";
 
 	return 0;
@@ -72,23 +73,9 @@ void BFS() {
 				if (box[nxt_h][nxt_x][nxt_y] == 0 ) { // 익지 않은 토마토이면 
 					q.push({ nxt_h, nxt_x, nxt_y });
 					box[nxt_h][nxt_x][nxt_y] = 1; // 토마토 익음.
+					change_cnt--;
 				}
 			}
 		}
 	}
-}
-
-bool CHECK() {
-
-	for (int h = 0;h < H;h++) {
-		for (int i = 0;i < N;i++) {
-			for (int j = 0;j < M;j++) {
-				if (box[h][i][j] == 0) {
-					return false; // 하나라도 익지 않은 토마토 존재 
-				}
-			}
-		}
-	}
-
-	return true;
 }
