@@ -1,8 +1,8 @@
 #include <iostream>
 using namespace std;
 
-int N;
-long long dp[91];
+int N; // N 자리 이친 수
+long long dp[91]; 
 
 int main() {
 	ios::sync_with_stdio(false);
@@ -12,13 +12,11 @@ int main() {
 
 	dp[1] = 1;
 	dp[2] = 1;
-	dp[3] = 2;
 
 	for (int i = 3;i <= N;i++) {
 		dp[i] = dp[i - 1] + dp[i - 2];
 	}
 
-	cout << dp[N];
-
+	cout << dp[N] << "\n";
 	return 0;
 }
