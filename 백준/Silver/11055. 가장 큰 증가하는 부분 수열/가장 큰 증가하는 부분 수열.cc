@@ -1,8 +1,8 @@
 #include <iostream>
+#include <vector>
 using namespace std;
 
 int N, res = 0;
-int arr[1001], dp[1001];
 
 int main() {
 	ios::sync_with_stdio(false);
@@ -10,23 +10,33 @@ int main() {
 
 	cin >> N;
 
+	vector<int> numbers(N);
+	vector<int> dp(N);
+
 	for (int i = 0;i < N;i++) {
-		cin >> arr[i];
+		cin >> numbers[i];
 	}
+	
+	dp[0] = numbers[0];
 
-	// dp[i]: i번 인덱스 까지의 가장 큰 부분 수열의 합을 저장 
-	for (int i = 0;i < N;i++) {
-		dp[i] = arr[i]; // 먼저 현재 위치의 값을 저장 
 
-		for (int j = 0;j < i;j++) {
-			if (arr[j] < arr[i] && (dp[i] < dp[j] + arr[i])) {
-				dp[i] = dp[j] + arr[i];
+	for (int i = 1;i < N;i++) {
+		dp[i] = numbers[i];
+
+		for (int j = i - 1; j >= 0;j--) {
+			if (numbers[j] < numbers[i]) {
+				dp[i] = max(dp[i], dp[j] + numbers[i]);
+				
 			}
 		}
-		res = res < dp[i] ? dp[i] : res; 
+	}
+
+	for (int i = 0;i < N;i++) {
+		res = res < dp[i] ? dp[i] : res;
 	}
 
 	cout << res << "\n";
 
 	return 0;
+
 }
