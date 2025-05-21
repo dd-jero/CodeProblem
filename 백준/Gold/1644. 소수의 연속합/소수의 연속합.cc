@@ -1,49 +1,53 @@
 #include <iostream>
 #include <vector>
-using namespace std;
+#include <cmath>
 
-int N;
-vector<bool> prime;
-vector<int> num;
+int N, res = 0, sum = 0;
+std::vector<int> numbers;
+std::vector<bool> prime;
+
+void IsPrime(int n);
 
 int main() {
-	ios::sync_with_stdio(false);
-	cin.tie(0); cout.tie(0);
+	std::ios::sync_with_stdio(false);
+	std::cin.tie(0); std::cout.tie(0);
 
-	cin >> N;
+	std::cin >> N;
 
-	prime.assign(N+1, true);
+	prime.resize(N + 1);
 
-	// 에라토스테네스의 체 
-	for (int i = 2;i * i <= N;i++) {
-		for (int j = i * i; j <= N; j += i) {
-			prime[j] = false; // 소수 아님
-		}
-	}
+	IsPrime(N);
 
-	// 소수인 수
 	for (int i = 2;i <= N;i++) {
-		if (prime[i]) num.push_back(i);
-	}
-	
-	int num_size = num.size();
-	int start = 0, end = 0, cur_sum = 0, res = 0;
-
-	while (start <= end) {
-		if (cur_sum >= N) {
-			cur_sum -= num[start++];
-		}
-		
-		if (cur_sum < N) {
-			if (end == num_size) break;
-			cur_sum += num[end++];
-
-		}
-
-		if (cur_sum == N) res++;
-		
+		if (!prime[i]) numbers.push_back(i);
 	}
 
-	cout << res << "\n";
+	int start = 0;
+	int end = 0;
+	int num_size = numbers.size();
+
+	while (1) {
+		if (sum >= N) { // 구하고자 하는 수 보다 크거나 같으면
+			if (sum == N) res++;  // 같으면 
+			sum -= numbers[start++]; // start 요소 빼고 인덱스 증가 
+		}
+		else { // 작으면 
+			if (end == num_size) break; // 범위 초과 시 종료
+			sum += numbers[end++]; // end 요소 더하고 인덱스 증가  
+		}
+	}
+
+	std::cout << res << "\n";
 	return 0;
+}
+
+void IsPrime(int n) {
+
+	for (int i = 2;i <= sqrt(n);i++) { // i*i부터 판별해서 루트 n까지만 돌면 됨. 
+		if (prime[i]) continue; // 이미 소수가 아니면
+
+		for (int j = i * i; j <= n;j += i) {
+			prime[j] = true;
+		}
+	}
 }
