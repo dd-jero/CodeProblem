@@ -30,7 +30,7 @@ int main() {
 
         int res = 0;
         for (int j = 1; j <= N; j++) {
-            if (checked[j] == -1) res++;
+            if (checked[j] == 1) res++;
         }
 
         cout << res << "\n";
@@ -48,7 +48,7 @@ void BFS(int start_student) {
             return;
         }
 
-        if (checked[cur] == -1) { // 현재 경로에서 이미 방문 = 사이클 발견
+        if (checked[cur] == 1) { // 현재 경로에서 이미 방문 = 사이클 발견
             // cur부터 사이클 시작점까지 팀 완성
             bool in_cycle = false;
             for (int student : prev) {
@@ -58,7 +58,7 @@ void BFS(int start_student) {
             return;
         }
 
-        checked[cur] = -1; // 현재 경로에서 방문 중 표시
+        checked[cur] = 1; // 현재 경로에서 방문 중 표시
         prev.push_back(cur);
 
         int nxt = want[cur];
