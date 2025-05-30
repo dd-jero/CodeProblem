@@ -1,26 +1,24 @@
-#define _CRT_SECURE_NO_WARNINGS
-#include <stdio.h>
-#include <algorithm>
-	
-int main(void) {
-	
-	int N = 0; // 정수 개수
-	int max_val = -1000000; // 최댓값 갱신 위한 변수
-	int min_val = 1000000; // 최솟값 갱신 위한 변수 
+#include <iostream>
+#include <string>
+using namespace std;
 
-	scanf("%d", &N);
+int N, min_num = 1000001, max_num = -1000001;
 
+int main() {
+	ios::sync_with_stdio(false);
+	cin.tie(0); cout.tie(0);
 
+	cin >> N;
+
+	int num;
 	for (int i = 0;i < N;i++) {
-		int num;
-		scanf("%d", &num);
-
-		if (max_val < num) max_val = num;
-		if (min_val > num) min_val = num;
+		cin >> num;
+		
+		if (num > max_num) max_num = num;
+		if (num < min_num) min_num = num;
 	}
 
-
-	printf("%d %d", min_val, max_val);
+	cout << min_num << " " << max_num << "\n";
 	
 	return 0;
 }
