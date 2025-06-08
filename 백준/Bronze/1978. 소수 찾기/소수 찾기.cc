@@ -1,34 +1,35 @@
 #include <iostream>
-#include <vector>
+#include <cmath>
 using namespace std;
 
-int main(void)
-{
-	int N, res = 0;
-	vector<int> vec;
+int N, res = 0, numbers[101];
+bool not_prime[1001]; // true: 소수 아님 
 
-	// 수의 개수
+int main() {
+	ios::sync_with_stdio(false);
+	cin.tie(0); cout.tie(0);
+
 	cin >> N;
-
+	
 	for (int i = 0;i < N;i++) {
-		int num;
-		cin >> num;
-		vec.push_back(num);
+		cin >> numbers[i];
 	}
 
-	for (int number : vec) {
-		for (int i = 2; i <= number;i++) {
+	not_prime[0] = true;
+	not_prime[1] = true; 
 
-			if (i == number) { // 현재 검사하는 숫자와 동일하면 이전까지 나누어지지 않은 것
-				res++;
-			}
+	for (int i = 2;i <= sqrt(1000);i++) {
+		if (not_prime[i]) continue;
 
-			if (number % i == 0) { // 나누어 떨어지면 소수 X 
-				break;
-			}
+		for (int j = i * i; j <= 1000;j += i) {
+			not_prime[j] = true;
 		}
 	}
 
-	cout << res;
+	for (int i = 0;i < N;i++) {
+		if (!not_prime[numbers[i]]) res++;
+	}
 
+	cout << res << "\n";
+	return 0;
 }
