@@ -62,6 +62,8 @@ int BFS() {
 			if (map[nxt_x][nxt_y] == 1) continue; // 다음 위치가 장애물인 경우 
 			if (visited[jump][nxt_x][nxt_y]) continue; // 이미 방문한 경우 
 
+			if (nxt_x == H - 1 && nxt_y == W - 1) return cnt; // 도착점 도달 
+
 
 			q.push({nxt_x, nxt_y, cnt, jump});
 			visited[jump][nxt_x][nxt_y] = true;
