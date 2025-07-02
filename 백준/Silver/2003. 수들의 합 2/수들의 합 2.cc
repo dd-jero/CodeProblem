@@ -1,37 +1,35 @@
 #include <iostream>
 using namespace std;
 
-int arr[10001];
-int res = 0;
+int N, M, res = 0; // N개의 수로 된 수열, M이 되는 경우의 수
+int numbers[10001]; 
 
 int main() {
 	ios::sync_with_stdio(false);
 	cin.tie(0); cout.tie(0);
 
-	int N, M; // 수의 개수, 목표 합
-
 	cin >> N >> M;
 
 	for (int i = 0;i < N;i++) {
-		cin >> arr[i];
+		cin >> numbers[i];
 	}
 
-	int start = 0, end = 0;
-	int sum = 0;
+	int left = 0, right = 0;
+	int sum = numbers[left];
 
-	while(1) {
+	while (right < N) {
 
-		if (sum >= M) { // 목표 값보다 크거나 같으면
-			sum -= arr[start++];
+		if (sum == M) { // M 동일
+			res++;
+			sum += numbers[++right]; // right 포인터 증가 => N 이상되면 루프문 종료 (더 이상 M이 나올 경우가 없음)
 		}
-		else if (end == N) {
-			break;
-		}
-		else {  // 목표 값보다 작으면
-			sum += arr[end++];
-		}
+		else if (sum < M) { // M 미만
 
-		if (sum == M) res++;
+			sum += numbers[++right];
+		}
+		else if (sum > M) { // M 초과
+			sum -= numbers[left++];
+		}
 	}
 
 	cout << res << "\n";
