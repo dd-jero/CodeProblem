@@ -1,20 +1,11 @@
 #include <vector>
+#include <unordered_set>
+#include <iostream>
 using namespace std;
-
-int ponketmon[200001]; // 폰켓몬의 종류 번호 1~200001
 
 int solution(vector<int> nums)
 {
-    int answer = 0;
+    unordered_set<int>s (nums.begin(), nums.end());
     
-    for(int i=0;i<nums.size();i++)
-    {
-        if(nums.size()/2 == answer) break; // 최대 가능 마리 도달
-        if(ponketmon[nums[i]] != 0) continue;
-       
-        answer++;
-        ponketmon[nums[i]]++;
-    }
-    
-    return answer;
+    return min(s.size(), nums.size()/2); // 중복되지 않는 폰켓몬 수, N/2 중 작은 값
 }
